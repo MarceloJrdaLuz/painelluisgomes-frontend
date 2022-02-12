@@ -15,7 +15,7 @@ export const Container = styled.div`
     transition: all 0.2s ease-in;   
     position: relative;
     @media (max-width: 1100px){
-        margin-bottom: 30px;
+        margin-bottom: 30px; 
     }   
     }
     section{
