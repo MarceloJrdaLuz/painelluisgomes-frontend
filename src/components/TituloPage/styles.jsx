@@ -37,7 +37,7 @@ export const Container = styled.div`
     }.red{
         color: #9b0606;
     }
-`
+`;
 
 export const Title = styled.h1`
     display: flex;
