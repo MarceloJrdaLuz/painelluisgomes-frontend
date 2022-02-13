@@ -16,15 +16,29 @@ export const ContainerPdf = styled.div`
         height: 70px;
         border: none;
         background-color: #bebebe40;
+        @media (max-width: 600px){
+            bottom: 0;
+            left:65%;
+            height: 50px;
+            background-color: transparent;
+
+        }
     }
     .btnProximo:hover{
         background: #bebebe;
         cursor: pointer;
+        @media (max-width: 600px){
+            padding: 4px;
+            background-color: transparent;
+        }
     }
     .btnAnterior:hover{
         background: #bebebe;
         cursor: pointer;
-
+        @media (max-width: 600px){
+            padding: 4px;
+            background-color: transparent;
+        }
     }
     .btnAnterior{
         position: absolute;
@@ -33,6 +47,12 @@ export const ContainerPdf = styled.div`
         height: 70px;
         border: none;
         background-color: #bebebe40;
+        @media (max-width: 600px){
+            bottom: 0;
+            left:30%;
+            height: 50px;
+            background-color: transparent;            
+        }
     }
     .voltar{
         position: absolute;
@@ -44,6 +64,10 @@ export const ContainerPdf = styled.div`
         border: none;
         background-color: transparent;
         border-radius: 25px;
+        @media (max-width: 600px){
+            top: 0;
+            left: 45%;
+        }
     }.voltar:hover{
         padding: 12px;
         cursor:pointer;

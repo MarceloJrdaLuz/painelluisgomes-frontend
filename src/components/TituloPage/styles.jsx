@@ -18,7 +18,7 @@ export const Container = styled.div`
         margin-bottom: 30px; 
     }   
     @media (max-width: 600px){
-       width: 95vw;
+       width: 98vw;
        min-width: 80%;
     }   
     }

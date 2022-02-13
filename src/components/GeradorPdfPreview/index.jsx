@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { ContainerPdf } from './styles';
 import loading from './Icons/loadin.gif';
@@ -11,6 +11,28 @@ export default function GeradorPdf({ ...props }) {
     const ultimaPagina = numPages
     const primeiraPagina = numPages - numPages + 1
 
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+   
+    function getWindowDimensions() {
+        const { innerWidth: width, innerHeight: height } = window;
+        return {
+          width,
+          height
+        };
+      }
+
+    function windowsDimensions() {       
+        useEffect(() => {
+          function handleResize() {
+            setWindowDimensions(getWindowDimensions());
+          }
+      
+          window.addEventListener('resize', handleResize);
+          return () => window.removeEventListener('resize', handleResize);
+        }, []);
+        return windowDimensions
+    }
+    windowsDimensions()
 
     function onDocumentLoadSuccess({ numPages }) {
         setNumPages(numPages)
@@ -36,7 +58,7 @@ export default function GeradorPdf({ ...props }) {
                 loading={<img src={loading} alt='Gif carregamento'></img>}
             >
                 <Page
-                    height={700}
+                    height={windowDimensions.width <=600 ? 600 : 700}
                     pageNumber={numberPage}
                     rotate={props.rotate}
                 />
