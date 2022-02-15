@@ -82,7 +82,7 @@ class App extends Component {
         this.updateFile(uploadedFile.id, {
           uploaded: true,
           id: response.data._id,
-          url: response.data.url
+          url: `${response.data.url}?rand=${Date.now()}`
         });
       })
       .catch(() => {
