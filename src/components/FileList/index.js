@@ -10,7 +10,7 @@ const FileList = ({ files, onDelete, onClick }) => (
     {files.map(uploadedFile => (
       <li key={uploadedFile.id}>
         <FileInfo>
-          <Preview src={uploadedFile.preview} />
+          <Preview src={`${uploadedFile.preview}?rand=${Date.now()}`} />
           <div>
             <strong onClick={() => onClick(uploadedFile.name)}>{uploadedFile.name}</strong>
             <span>

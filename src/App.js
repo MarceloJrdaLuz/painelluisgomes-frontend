@@ -82,7 +82,7 @@ class App extends Component {
         this.updateFile(uploadedFile.id, {
           uploaded: true,
           id: response.data._id,
-          url: `${response.data.url}?rand=${Date.now()}`
+          url: response.data.url
         });
       })
       .catch(() => {
@@ -109,7 +109,6 @@ class App extends Component {
       pdfShow: i === 'false' ? false : true,
       item: i,
     })
-    console.log(i)
   }
   
   render() {
