@@ -1,4 +1,4 @@
-import React, { Component} from "react";
+import React, { Component } from "react";
 import { uniqueId } from "lodash";
 import filesize from "filesize";
 
@@ -10,12 +10,16 @@ import { Container, Content } from "./styles";
 import Upload from "./components/Upload";
 import FileList from "./components/FileList";
 import TituloPage from "./components/TituloPage";
+import ConfirmDelete from "./components/ConfirmDelete";
 
 class App extends Component {
   state = {
     uploadedFiles: [],
     pdfShow: false,
     item: '',
+    showConfirmDelete: false,
+    itemDeleteName: 'Padrao',
+    itemDeleteId: '',
   };
 
   async componentDidMount() {
@@ -96,33 +100,59 @@ class App extends Component {
     await api.delete(`posts/${id}`);
 
     this.setState({
-      uploadedFiles: this.state.uploadedFiles.filter(file => file.id !== id)
+      uploadedFiles: this.state.uploadedFiles.filter(file => file.id !== id),
+      itemDelete: this.state.uploadedFiles.forEach(file => {
+        if (file.id === id) {
+          return file.name
+        }
+      })
     });
   };
+
+  confirmDelete = (id, name) => {
+    this.setState({
+      itemDeleteName: name,
+      itemDeleteId: id,
+      showConfirmDelete: true
+    })
+  }
+
+  notConfirmeDelete = () => {
+    this.setState({
+      showConfirmDelete: false
+    })
+  }
+
+
+  handleShowConfirmDelete = () => {
+    this.handleDelete(this.state.itemDeleteId)
+    this.setState({ showConfirmDelete: !this.state.showConfirmDelete })
+  }
 
   UNSAFE_componentWillUnmount() {
     this.state.uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview));
   };
 
-  setPdfShow = (i) =>{
+  setPdfShow = (i) => {
     this.setState({
       pdfShow: i === 'false' ? false : true,
       item: i,
     })
   }
-  
+
   render() {
-    const { uploadedFiles } = this.state;
+    const { uploadedFiles, itemDeleteName } = this.state;
 
     return (
       <Container>
-        <TituloPage pdfShow={this.state.pdfShow} item={this.state.item} onChangePdfShow={this.setPdfShow}/>
+        <TituloPage pdfShow={this.state.pdfShow} item={this.state.item} onChangePdfShow={this.setPdfShow} />
         <Content>
           <Upload onUpload={this.handleUpload} />
           {!!uploadedFiles.length && (
-            <FileList files={uploadedFiles} onDelete={this.handleDelete} onClick={this.setPdfShow}/>
+            <FileList files={uploadedFiles} onDelete={this.confirmDelete} onClick={this.setPdfShow} />
           )}
         </Content>
+        {this.state.showConfirmDelete && <ConfirmDelete uploadFileName={itemDeleteName} onChangeShowTrue={this.handleShowConfirmDelete} onChangeShowFalse={this.notConfirmeDelete}/>}
         <GlobalStyle />
       </Container>
     );
