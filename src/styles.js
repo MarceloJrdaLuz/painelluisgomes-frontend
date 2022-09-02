@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  height: 100%;
+  height: auto;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -9,6 +9,8 @@ export const Container = styled.div`
         flex-direction: column-reverse;
         justify-content: initial;
         overflow: auto;
+        height: auto;
+        margin: 10px 0;
       }
 `;
 
