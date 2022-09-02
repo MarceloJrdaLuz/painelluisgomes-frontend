@@ -47,12 +47,12 @@ export const AlertDelete = styled.section`
         border-radius: 20px;
         padding: 10px 5px;
         font-size: 1.1rem;
-        font-family: 'Open Sans'
+        font-family: 'Open Sans';
+        border-style: none;
     }
 
     .btn-confirm{
-        background-color: #edf6f9;
-        
+        background-color: #edf6f9; 
     }
 
     .btn-confirm:hover{
