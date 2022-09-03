@@ -31,11 +31,14 @@ const App = () => {
 
   useEffect(() => {
     getPosts()
-    const uploadedFiles = uploadedFile
-    return () => {
-      uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview))
-    }
   }, [])
+
+
+  useEffect(() =>
+    console.log(uploadedFile),
+    () => {
+      uploadedFile.forEach(file => URL.revokeObjectURL(file.preview))
+    }, [uploadedFile])
 
   console.log(uploadedFile)
   async function getPosts() {
@@ -172,7 +175,7 @@ const App = () => {
 
   // useEffect(() => {
   //   const uploadedFiles = uploadedFile
-    
+
   //   return () => {
   //     uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview))
   //   }
