@@ -33,14 +33,6 @@ const App = () => {
     getPosts()
   }, [])
 
-
-  useEffect(() =>{
-    getPosts()
-    // console.log(uploadedFile),
-    // () => {
-    //   uploadedFile.forEach(file => URL.revokeObjectURL(file.preview))
-    }, [uploadedFile])
-
   async function getPosts() {
     const response = await api.get("posts")
 
