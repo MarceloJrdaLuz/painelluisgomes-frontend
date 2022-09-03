@@ -31,7 +31,7 @@ const App = () => {
 
   useEffect(() => {
     getPosts()
-    const uploadedFiles = updateFile
+    const uploadedFiles = uploadedFile
     return () => {
       uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview))
     }
