@@ -28,9 +28,12 @@ const App = () => {
   //   itemDeleteId: '',
   // };
 
-  useEffect(()=>{
-    uploadedFile.forEach(file => URL.revokeObjectURL(file.preview))
-  })
+  useEffect(() => {
+    const uploadedFiles = uploadedFile
+    return () => {
+      uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview))
+    }
+  }, [])
 
   useEffect(() => {
     getPosts()
@@ -175,7 +178,7 @@ const App = () => {
       <TituloPage pdfShow={pdfShow} item={item} onChangePdfShow={handlePdfShow} />
       <Content>
         <Upload onUpload={handleUpload} />
-        {uploadedFile.length && (
+        {!!uploadedFile.length && (
           <FileList files={uploadedFile} onDelete={confirmDelete} onClick={handlePdfShow} />
         )}
       </Content>
