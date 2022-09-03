@@ -59,7 +59,7 @@ const App = () => {
       url: null
     }));
 
-    setUploadedFile(...uploadedFile, uploadedFiles)
+    setUploadedFile(prev => [...prev, uploadedFiles])
 
 
     // this.setState({
