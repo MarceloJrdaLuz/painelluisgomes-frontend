@@ -28,12 +28,6 @@ const App = () => {
   //   itemDeleteId: '',
   // };
 
-  useEffect(() => {
-    const uploadedFiles = uploadedFile
-    return () => {
-      uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview))
-    }
-  }, [])
 
   useEffect(() => {
     getPosts()
@@ -159,7 +153,7 @@ const App = () => {
   }
 
   // UNSAFE_componentWillUnmount() {
-  //   this.state.;
+  //   this.state.uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview));
   // };
 
 
@@ -171,6 +165,15 @@ const App = () => {
     //   item: i,
     // })
   }
+
+  useEffect(() => {
+    const uploadedFiles = uploadedFile
+    
+    return () => {
+      uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview))
+    }
+  }, [])
+
 
 
   return (
