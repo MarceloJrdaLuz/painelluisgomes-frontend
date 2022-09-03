@@ -28,6 +28,10 @@ const App = () => {
   //   itemDeleteId: '',
   // };
 
+  useEffect(()=>{
+    uploadedFile.forEach(file => URL.revokeObjectURL(file.preview))
+  })
+
   useEffect(() => {
     getPosts()
   }, [])
@@ -152,8 +156,9 @@ const App = () => {
   }
 
   // UNSAFE_componentWillUnmount() {
-  //   this.state.uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview));
+  //   this.state.;
   // };
+
 
   const handlePdfShow = (i) => {
     setPdfShow(i === "false" ? false : true)
