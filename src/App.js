@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { uniqueId } from "lodash";
 import filesize from "filesize";
 
@@ -12,32 +12,41 @@ import FileList from "./components/FileList";
 import TituloPage from "./components/TituloPage";
 import ConfirmDelete from "./components/ConfirmDelete";
 
-class App extends Component {
-  state = {
-    uploadedFiles: [],
-    pdfShow: false,
-    item: '',
-    showConfirmDelete: false,
-    itemDeleteName: 'Padrao',
-    itemDeleteId: '',
-  };
+const App = () => {
+  const [uploadedFile, setUploadedFile] = useState([])
+  const [pdfShow, setPdfShow] = useState(false)
+  const [item, setItem] = useState("")
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false)
+  const [itemDeleteName, setItemDeleteName] = useState("")
+  const [itemDeteleId, setItemDeleteId] = useState("")
+  // state = {
+  //   uploadedFiles: [],
+  //   pdfShow: false,
+  //   item: '',
+  //   showConfirmDelete: false,
+  //   itemDeleteName: 'Padrao',
+  //   itemDeleteId: '',
+  // };
 
-  async componentDidMount() {
-    const response = await api.get("posts");
+  useEffect(() => {
+    getPosts()
+  }, [])
 
-    this.setState({
-      uploadedFiles: response.data.map(file => ({
-        id: file._id,
-        name: file.name,
-        readableSize: filesize(file.size),
-        preview: file.url,
-        uploaded: true,
-        url: file.url
-      }))
-    });
+  console.log(uploadedFile)
+  async function getPosts() {
+    const response = await api.get("posts")
+
+    response.data.map(file => setUploadedFile(prev => [...prev, {
+      id: file._id,
+      name: file.name,
+      readableSize: filesize(file.size),
+      preview: file.url,
+      uploaded: true,
+      url: file.url
+    }]))
   }
 
-  handleUpload = files => {
+  const handleUpload = files => {
     const uploadedFiles = files.map(file => ({
       file,
       id: uniqueId(),
@@ -50,24 +59,33 @@ class App extends Component {
       url: null
     }));
 
-    this.setState({
-      uploadedFiles: this.state.uploadedFiles.concat(uploadedFiles)
-    });
+    setUploadedFile(...uploadedFile, uploadedFiles)
 
-    uploadedFiles.forEach(this.processUpload);
+
+    // this.setState({
+    //   uploadedFiles: this.state.uploadedFiles.concat(uploadedFiles)
+    // });
+
+    uploadedFiles.forEach(processUpload);
   };
 
-  updateFile = (id, data) => {
-    this.setState({
-      uploadedFiles: this.state.uploadedFiles.map(uploadedFile => {
-        return id === uploadedFile.id
-          ? { ...uploadedFile, ...data }
-          : uploadedFile;
-      })
-    });
+  const updateFile = (id, data) => {
+    uploadedFile.map(uploadedFile => {
+      return id === uploadedFile.id
+        ? { ...uploadedFile, ...data }
+        : uploadedFile
+    })
+
+    // this.setState({
+    //   uploadedFiles: this.state.uploadedFiles.map(uploadedFile => {
+    //     return id === uploadedFile.id
+    //       ? { ...uploadedFile, ...data }
+    //       : uploadedFile;
+    //   })
+    // });
   };
 
-  processUpload = uploadedFile => {
+  const processUpload = uploadedFile => {
     const data = new FormData();
 
     data.append("file", uploadedFile.file, uploadedFile.name);
@@ -77,81 +95,89 @@ class App extends Component {
         onUploadProgress: e => {
           const progress = parseInt(Math.round((e.loaded * 100) / e.total));
 
-          this.updateFile(uploadedFile.id, {
+          updateFile(uploadedFile.id, {
             progress
           });
         }
       })
       .then(response => {
-        this.updateFile(uploadedFile.id, {
+        updateFile(uploadedFile.id, {
           uploaded: true,
           id: response.data._id,
           url: response.data.url
         });
       })
       .catch(() => {
-        this.updateFile(uploadedFile.id, {
+        updateFile(uploadedFile.id, {
           error: true
         });
       });
   };
 
-  handleDelete = async id => {
+  const handleDelete = async id => {
     await api.delete(`posts/${id}`);
 
-    this.setState({
-      uploadedFiles: this.state.uploadedFiles.filter(file => file.id !== id)
-    });
+    setUploadedFile(uploadedFile.filter(file => file.id !== id))
+
+    // this.setState({
+    //   uploadedFiles: this.state.uploadedFiles.filter(file => file.id !== id)
+    // });
   };
 
-  confirmDelete = (id, name) => {
-    this.setState({
-      itemDeleteName: name,
-      itemDeleteId: id,
-      showConfirmDelete: true
-    })
+  const confirmDelete = (id, name) => {
+    setItemDeleteName(name)
+    setItemDeleteId(id)
+    setShowConfirmDelete(true)
+    // this.setState({
+    //   itemDeleteName: name,
+    //   itemDeleteId: id,
+    //   showConfirmDelete: true
+    // })
   }
 
-  notConfirmeDelete = () => {
-    this.setState({
-      showConfirmDelete: false
-    })
+  const notConfirmeDelete = () => {
+    setShowConfirmDelete(false)
+    // this.setState({
+    //   showConfirmDelete: false
+    // })
   }
 
 
-  handleShowConfirmDelete = () => {
-    this.handleDelete(this.state.itemDeleteId)
-    this.setState({ showConfirmDelete: !this.state.showConfirmDelete })
+  const handleShowConfirmDelete = () => {
+    handleDelete(itemDeteleId)
+    setShowConfirmDelete(!showConfirmDelete)
+
+    // this.handleDelete(this.state.itemDeleteId)
+    // this.setState({ showConfirmDelete: !this.state.showConfirmDelete })
   }
 
-  UNSAFE_componentWillUnmount() {
-    this.state.uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview));
-  };
+  // UNSAFE_componentWillUnmount() {
+  //   this.state.uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview));
+  // };
 
-  setPdfShow = (i) => {
-    this.setState({
-      pdfShow: i === 'false' ? false : true,
-      item: i,
-    })
+  const handlePdfShow = (i) => {
+    setPdfShow(i === "false" ? false : true)
+    setItem(i)
+    // this.setState({
+    //   pdfShow: i === 'false' ? false : true,
+    //   item: i,
+    // })
   }
 
-  render() {
-    const { uploadedFiles, itemDeleteName } = this.state;
 
-    return (
-      <Container>
-        <TituloPage pdfShow={this.state.pdfShow} item={this.state.item} onChangePdfShow={this.setPdfShow} />
-        <Content>
-          <Upload onUpload={this.handleUpload} />
-          {!!uploadedFiles.length && (
-            <FileList files={uploadedFiles} onDelete={this.confirmDelete} onClick={this.setPdfShow} />
-          )}
-        </Content>
-        {this.state.showConfirmDelete && <ConfirmDelete uploadFileName={itemDeleteName} onChangeShowTrue={this.handleShowConfirmDelete} onChangeShowFalse={this.notConfirmeDelete}/>}
-        <GlobalStyle />
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <TituloPage pdfShow={pdfShow} item={item} onChangePdfShow={handlePdfShow} />
+      <Content>
+        <Upload onUpload={handleUpload} />
+        {uploadedFile.length && (
+          <FileList files={uploadedFile} onDelete={confirmDelete} onClick={handlePdfShow} />
+        )}
+      </Content>
+      {showConfirmDelete && <ConfirmDelete uploadFileName={itemDeleteName} onChangeShowTrue={handleShowConfirmDelete} onChangeShowFalse={notConfirmeDelete} />}
+      <GlobalStyle />
+    </Container>
+  );
 }
 
 export default App;
