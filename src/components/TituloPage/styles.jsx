@@ -21,7 +21,6 @@ export const Container = styled.div`
        width: 98vw;
        min-width: 80%;
     }   
-    }
     section{
         align-self: center;
     }

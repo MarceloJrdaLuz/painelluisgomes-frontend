@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { uniqueId } from "lodash";
+import { v4 as uniqueId } from 'uuid'
 import filesize from "filesize";
 
 import api from "./services/api";
@@ -11,6 +11,7 @@ import Upload from "./components/Upload";
 import FileList from "./components/FileList";
 import TituloPage from "./components/TituloPage";
 import ConfirmDelete from "./components/ConfirmDelete";
+import Menu from "./components/Menu";
 
 const App = () => {
   const [uploadedFile, setUploadedFile] = useState([])
@@ -28,9 +29,20 @@ const App = () => {
   //   itemDeleteId: '',
   // };
 
+  // useEffect(() => {
+  //   const uploadedFiles = uploadedFile
+
+  //   return () => {
+  //     setUploadedFile(uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview)))
+  //   }
+  // }, [])
 
   useEffect(() => {
     getPosts()
+
+    // return () => {
+    //   setUploadedFile(uploadedFile.forEach(file => URL.revokeObjectURL(file.preview)))
+    // }
   }, [])
 
   async function getPosts() {
@@ -59,22 +71,25 @@ const App = () => {
       url: null
     }));
 
-    setUploadedFile(prev => [...prev, uploadedFiles])
-
-
+    setUploadedFile(prev => [...prev, ...uploadedFiles])
+    uploadedFiles.forEach(processUpload)
     // this.setState({
     //   uploadedFiles: this.state.uploadedFiles.concat(uploadedFiles)
     // });
 
-    uploadedFiles.forEach(processUpload);
   };
 
   const updateFile = (id, data) => {
-    uploadedFile.map(uploadedFile => {
-      return id === uploadedFile.id
-        ? { ...uploadedFile, ...data }
-        : uploadedFile
-    })
+    setUploadedFile(prev => [...prev])
+    console.log(uploadedFile)
+    // // const clone = uploadedFile.map((uploaded, i) => {
+    // //   return id === uploaded.id
+    // //     ?
+    // //     { ...uploaded, ...data }
+    // //     :
+    // //     { ...uploaded }
+    // })
+
 
     // this.setState({
     //   uploadedFiles: this.state.uploadedFiles.map(uploadedFile => {
@@ -93,8 +108,7 @@ const App = () => {
     api
       .post("posts", data, {
         onUploadProgress: e => {
-          const progress = parseInt(Math.round((e.loaded * 100) / e.total));
-
+          let progress = parseInt(Math.round((e.loaded * 100) / e.total));
           updateFile(uploadedFile.id, {
             progress
           });
@@ -165,28 +179,28 @@ const App = () => {
     // })
   }
 
-  // useEffect(() => {
-  //   const uploadedFiles = uploadedFile
-
-  //   return () => {
-  //     uploadedFiles.forEach(file => URL.revokeObjectURL(file.preview))
-  //   }
-  // }, [])
 
 
 
   return (
-    <Container>
-      <TituloPage pdfShow={pdfShow} item={item} onChangePdfShow={handlePdfShow} />
-      <Content>
-        <Upload onUpload={handleUpload} />
-        {!!uploadedFile.length && (
-          <FileList files={uploadedFile} onDelete={confirmDelete} onClick={handlePdfShow} />
-        )}
-      </Content>
-      {showConfirmDelete && <ConfirmDelete uploadFileName={itemDeleteName} onChangeShowTrue={handleShowConfirmDelete} onChangeShowFalse={notConfirmeDelete} />}
-      <GlobalStyle />
-    </Container>
+    <>
+      <Container>
+        <Menu />
+        <TituloPage pdfShow={pdfShow} item={item} onChangePdfShow={handlePdfShow} />
+        {showConfirmDelete ? (
+        <ConfirmDelete uploadFileName={itemDeleteName} onChangeShowTrue={handleShowConfirmDelete} onChangeShowFalse={notConfirmeDelete} />
+      ) : (
+        <Content>
+          <Upload onUpload={handleUpload} />
+          {!!uploadedFile.length && (
+            <FileList files={uploadedFile} onDelete={confirmDelete} onClick={handlePdfShow} />
+          )}
+        </Content>
+      )}
+        <GlobalStyle />
+      </Container>
+      
+    </>
   );
 }
 

@@ -5,6 +5,8 @@ export const AlertDelete = styled.section`
     width: 100vw;
     height: 100vh;
     position: absolute;
+    top: 0;
+    bottom: 0;
     background-color: rgba(0,0,0,0.6);
     display: flex;
     flex-direction:column;
