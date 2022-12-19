@@ -36,7 +36,7 @@ export default function TituloPage({ ...props }) {
                         {!padroes ? (
                             <>
                                 <Title>
-                                    Programações - Congregação Bituruna
+                                    Programações - Congregação Luis Gomes
                                 </Title>
                                 <Botao texto='Padrão Nomes de Arquivos' onClick={() => setPadroes(true)}></Botao>
                             </>
