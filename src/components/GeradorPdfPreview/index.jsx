@@ -53,7 +53,7 @@ export default function GeradorPdf({ ...props }) {
     return (
         <ContainerPdf>
             <Document
-                file={`https://marceloupload.s3.sa-east-1.amazonaws.com/-${props.item}`}
+                file={`https://luisgomes.s3.sa-east-1.amazonaws.com/-${props.item}`}
                 onLoadSuccess={onDocumentLoadSuccess}
                 loading={<img src={loading} alt='Gif carregamento'></img>}
             >

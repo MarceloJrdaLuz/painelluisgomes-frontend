@@ -38,7 +38,6 @@ const App = () => {
   // }, [])
 
   useEffect(() => {
-    console.log(process.env.REACT_APP_API_URL)
     getPosts()
 
     // return () => {
@@ -81,16 +80,23 @@ const App = () => {
   };
 
   const updateFile = (id, data) => {
-    setUploadedFile(prev => [...prev])
-    console.log(uploadedFile)
-    // // const clone = uploadedFile.map((uploaded, i) => {
-    // //   return id === uploaded.id
-    // //     ?
-    // //     { ...uploaded, ...data }
-    // //     :
-    // //     { ...uploaded }
+    setUploadedFile(
+      uploadedFile.map((uploaded) => {
+          return id === uploaded.id ? { ...uploaded, ...data } : {...uploaded}
+      }
+      ))
+    // setUploadedFile(uploadedFile.map((uploaded, i) => {
+    //   return id === uploaded.id
+    //     ?
+    //     // { ...uploaded, ...data }
+    //     console.log(data)
+    //     :
+    //     // { ...uploaded }
+    //     console.log(uploadedFile)
+    // }))
+    // uploadedFile.forEach((uploaded, i) => {
+    //    id === uploaded.id && console.log(data.progress)
     // })
-
 
     // this.setState({
     //   uploadedFiles: this.state.uploadedFiles.map(uploadedFile => {
@@ -100,6 +106,10 @@ const App = () => {
     //   })
     // });
   };
+
+  useEffect(() => {
+    console.log(uploadedFile)
+  }, [uploadedFile])
 
   const processUpload = uploadedFile => {
     const data = new FormData();
@@ -189,18 +199,18 @@ const App = () => {
         <Menu />
         <TituloPage pdfShow={pdfShow} item={item} onChangePdfShow={handlePdfShow} />
         {showConfirmDelete ? (
-        <ConfirmDelete uploadFileName={itemDeleteName} onChangeShowTrue={handleShowConfirmDelete} onChangeShowFalse={notConfirmeDelete} />
-      ) : (
-        <Content>
-          <Upload onUpload={handleUpload} />
-          {!!uploadedFile.length && (
-            <FileList files={uploadedFile} onDelete={confirmDelete} onClick={handlePdfShow} />
-          )}
-        </Content>
-      )}
+          <ConfirmDelete uploadFileName={itemDeleteName} onChangeShowTrue={handleShowConfirmDelete} onChangeShowFalse={notConfirmeDelete} />
+        ) : (
+          <Content>
+            <Upload onUpload={handleUpload} />
+            {!!uploadedFile.length && (
+              <FileList files={uploadedFile} onDelete={confirmDelete} onClick={handlePdfShow} />
+            )}
+          </Content>
+        )}
         <GlobalStyle />
       </Container>
-      
+
     </>
   );
 }
