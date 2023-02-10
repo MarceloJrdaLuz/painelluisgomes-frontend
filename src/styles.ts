@@ -1,7 +1,7 @@
-import styled from "styled-components";
-
-export const Container = styled.div`
-  height: auto;
+ import styled from "styled-components";
+ 
+ export const Container = styled.div`
+   height: auto;
   margin-top: 70px;
   min-height: 800px;
   display: flex;
@@ -15,13 +15,13 @@ export const Container = styled.div`
         height: auto;
         margin: 70px 0;
       }
-`;
-
-export const Content = styled.div`
+ `;
+ 
+ export const Content = styled.div`
   width: 100%;
   max-width: 600px;
   margin: 70px;
   background: rgb(229 231 235);
   border-radius: 10px;
   padding: 20px;
-`;
+ `;
