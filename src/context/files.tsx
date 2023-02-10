@@ -128,16 +128,18 @@ const FileProvider: React.FC<IChildren> = ({ children }) => {
                         url: response.data.url,
                     });
                 })
-                // .catch((err) => {
-                //     console.error(
-                //         `Houve um problema para fazer upload ${uploadedFile.name} no servidor AWS`
-                //     );
-                //     console.log(err);
+                .catch((err) => {
+                    // console.error(
+                    //     `Houve um problema para fazer upload ${uploadedFile.name} no servidor AWS`
+                    // );
+                    // console.log(err);
+                    const messageError = err.erro.message
+                    console.log(messageError)
 
-                //     updateFile(uploadedFile.id, {
-                //         error: true,
-                //     });
-                // });
+                    updateFile(uploadedFile.id, {
+                        error: true,
+                    });
+                });
         },
         [updateFile]
     );
