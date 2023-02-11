@@ -129,12 +129,10 @@ const FileProvider: React.FC<IChildren> = ({ children }) => {
                     });
                 })
                 .catch((err) => {
-                    // console.error(
-                    //     `Houve um problema para fazer upload ${uploadedFile.name} no servidor AWS`
-                    // );
-                    // console.log(err);
-                    const messageError = err.error.message
-                    console.log(messageError)
+                    console.error(
+                        `Houve um problema para fazer upload ${uploadedFile.name} no servidor AWS`
+                    );
+                    console.log(err);
 
                     updateFile(uploadedFile.id, {
                         error: true,
