@@ -80,7 +80,7 @@ const FileProvider: React.FC<IChildren> = ({ children }) => {
                 };
             });
 
-            const filterOrder = postFormatted.sort(function(x, y) {
+            postFormatted.sort(function(x, y) {
                 let a = x.name.toUpperCase(),
                 b = y.name.toUpperCase();
 
